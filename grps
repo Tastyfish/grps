@@ -30,12 +30,14 @@ local cmd = {
 			if not file then
 				break
 			end
+			print("Downloading "..file)
 			local hp = http.get("http://raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
 			local fp = fs.open("/"..reponame.."/"..file, "w")
 			fp.write(hp.readAll())
 			fp.close()
 			hp.close()
 		end
+		print("Done.")
 		filesp.close()
 	end,
 }
