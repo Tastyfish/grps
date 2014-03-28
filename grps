@@ -15,7 +15,7 @@ local cmd = {
 			error "You must have a repo path in the form of usenamer reponame"
 		end
 		print("Opening repo /"..args[2].."/"..args[3].."/master")
-		local filesp = http.get("http://raw.github.com/"..args[2].."/"..args[3].."/master/files.lst")
+		local filesp = http.get("https://raw.github.com/"..args[2].."/"..args[3].."/master/files.lst")
 		local reponame = args[3]
 		if filesp then
 			if not fs.isDir("/"..reponame) then
@@ -31,7 +31,7 @@ local cmd = {
 				break
 			end
 			print("Downloading "..file)
-			local hp = http.get("http://raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
+			local hp = http.get("https://raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
 			local fp = fs.open("/"..reponame.."/"..file, "w")
 			fp.write(hp.readAll())
 			fp.close()
