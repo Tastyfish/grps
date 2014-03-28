@@ -1,0 +1,44 @@
+local args = {...}
+
+local cmd = {
+	alias = function()
+		-- refresh aliases
+		for _,pkg in ipairs(fs.list("")) do
+			if fs.exists(pkg.."/"..pkg) then
+				shell.setAlias(pkg, "/"..pkg.."/"..pkg)
+			end
+		end
+	end,
+	pull = function()
+		-- pull all data from repo
+		if not args[2] or not args[3] then
+			error "You must have a repo path in the form of usenamer reponame"
+		end
+		local filesp = http.get("raw.github.com/"..args[2].."/"..args[3].."/master/files.lst")
+		local reponame = args[3]
+		if filesp then
+			if not fs.isDir("/"..reponame) then
+				fs.makeDir(pkg)
+			end
+		end
+		for file in filesp:lines()
+			local hp = http.get("raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
+			local fp = fs.open("/"..reponame.."/"..file, "w")
+			fp.write(hp.readAll())
+			fp.close()
+			hp.close()
+		end
+		filesp.close()
+	end,
+}[args[1]]
+
+if cmd then
+	cmd()
+else
+	error [[
+		Unknown command; valid commands:
+			alias
+				Reload all progam aliases.
+			pull <username> <reponame>
+				Pull a repo]]
+end
