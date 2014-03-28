@@ -21,7 +21,7 @@ local cmd = {
 				fs.makeDir(pkg)
 			end
 		end
-		for file in filesp:lines()
+		for file in filesp:lines() do
 			local hp = http.get("raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
 			local fp = fs.open("/"..reponame.."/"..file, "w")
 			fp.write(hp.readAll())
