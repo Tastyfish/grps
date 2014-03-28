@@ -24,7 +24,12 @@ local cmd = {
 		else
 			error("Failed to find repo.")
 		end
-		for file in filesp:lines() do
+		local file
+		while true do
+			file = filesp.readLine()
+			if not file then
+				break
+			end
 			local hp = http.get("http://raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
 			local fp = fs.open("/"..reponame.."/"..file, "w")
 			fp.write(hp.readAll())
