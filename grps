@@ -19,7 +19,7 @@ local cmd = {
 		local reponame = args[3]
 		if filesp then
 			if not fs.isDir("/"..reponame) then
-				fs.makeDir(pkg)
+				fs.makeDir("/"..reponame)
 			end
 		else
 			error("Failed to find repo.")
