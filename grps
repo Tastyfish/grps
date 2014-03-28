@@ -14,12 +14,15 @@ local cmd = {
 		if not args[2] or not args[3] then
 			error "You must have a repo path in the form of usenamer reponame"
 		end
+		print("Opening repo /"..args[2].."/"..args[3].."/master")
 		local filesp = http.get("raw.github.com/"..args[2].."/"..args[3].."/master/files.lst")
 		local reponame = args[3]
 		if filesp then
 			if not fs.isDir("/"..reponame) then
 				fs.makeDir(pkg)
 			end
+		else
+			error("Failed to find repo.")
 		end
 		for file in filesp:lines() do
 			local hp = http.get("raw.github.com/"..args[2].."/"..reponame.."/master/"..file)
@@ -30,7 +33,8 @@ local cmd = {
 		end
 		filesp.close()
 	end,
-}[args[1]]
+}
+cmd = cmd[args[1]]
 
 if cmd then
 	cmd()
